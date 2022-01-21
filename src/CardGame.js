@@ -3,18 +3,6 @@ class CardGame extends React.Component {
     
     constructor(props){
         super(props);
-        this.state = {
-            DrawCooldown:0,
-            DrawnCard:{
-                name:"",
-                royalRoad:0
-            }
-        };
-        this.drawcd = this.drawcd.bind(this);
-        this.updateDrawCD = this.updateDrawCD.bind(this);
-        this.draw = this.draw.bind(this);
-
-        this.drawInterval = 0;
         this.cards = [
             {
                 name:"",
@@ -45,6 +33,31 @@ class CardGame extends React.Component {
                 royalRoad:3
             }
         ]
+        this.royalRoadTypes = [
+            {
+                name: ""
+            },
+            {
+                name: "Power"
+            },
+            {
+                name: "AoE"
+            },
+            {
+                name: "Duration"
+            }
+        ]
+        this.state = {
+            DrawCooldown:0,
+            DrawnCard:this.cards[0],
+            RoyalRoad:this.royalRoadTypes[0]
+        };
+        this.drawcd = this.drawcd.bind(this);
+        this.updateDrawCD = this.updateDrawCD.bind(this);
+        this.draw = this.draw.bind(this);
+        this.royalRoad = this.royalRoad.bind(this);
+
+        this.drawInterval = 0;
     }
 
     draw(){
@@ -75,21 +88,29 @@ class CardGame extends React.Component {
         }
     }
 
+    royalRoad(){
+        if(this.state.DrawnCard.name = "")return;
+        this.setState(previousState => ({ 
+            DrawnCard: this.cards[0],
+            RoyalRoad: this.royalRoadTypes[previousState.DrawnCard.royalRoad]
+         }));
+    }
+
     render(){
         return (
             <div id="cardGame">
             <div id="drawSection">
-                <button id="draw" onClick={this.draw}>
+                <button id="draw" onClick={ this.draw }>
                 Draw 
                 </button>
                 <span id="drawCd">{ this.state.DrawCooldown > 0 && this.state.DrawCooldown }</span>
                 <span id="drawnCard"> { this.state.DrawnCard.name } </span>
             </div>
             <div id="royalRoadSection">
-                <button id="royalRoad">
+                <button id="royalRoad" onClick={ this.royalRoad }>
                     Royal Road
                 </button>
-                <span id="royalRoadEffect"></span>
+                <span id="royalRoadEffect">{ this.state.RoyalRoad.name }</span>
             </div>
             <div id="spreadSection">
                 <button id="spread">
