@@ -51,15 +51,19 @@ class CardGame extends React.Component {
             DrawCooldown:0,
             DrawnCard:this.cards[0],
             RoyalRoad:this.royalRoadTypes[0],
-            SpreadContent:this.cards[0]
+            SpreadContent:this.cards[0],
+            SleeveDrawCooldown:0
         };
         this.drawcd = this.drawcd.bind(this);
         this.updateDrawCD = this.updateDrawCD.bind(this);
         this.draw = this.draw.bind(this);
         this.royalRoad = this.royalRoad.bind(this);
         this.spread = this.spread.bind(this);
+        this.sleeveDraw = this.sleeveDraw.bind(this);
+        this.updateSleeveDrawCd = this.updateSleeveDrawCd.bind(this);
 
         this.drawInterval = 0;
+        this.sleeveDrawInterval = 0;
     }
 
     draw(){
@@ -107,6 +111,34 @@ class CardGame extends React.Component {
         }));
     }
 
+    sleeveDraw(){
+        if(this.state.RoyalRoad.name === ""){
+            this.setState({RoyalRoad:this.royalRoadTypes[this.cards[this.randomCard()].royalRoad]});
+        }
+        if(this.state.DrawnCard.name === ""){
+            this.setState({DrawnCard:this.cards[this.randomCard()]});
+        }
+        if(this.state.DrawnCard.name === ""){
+            this.setState({SpreadContent:this.cards[this.randomCard()]});
+        }
+        this.sleeveDrawCd();
+    }
+
+    sleeveDrawCd(){
+        this.setState({SleeveDrawnCooldown:5});
+        this.sleeveDrawInterval = setInterval(this.updateSleeveDrawCd, 1000);
+    }
+
+    updateSleeveDrawCd(){
+        this.setState(prevState => ({
+            SleeveDrawCooldown:prevState.SleeveDrawCooldown-1
+        }));
+        if(this.state.SleeveDrawCooldown === 0){
+            clearInterval(this.sleeveDrawInterval);
+            this.sleeveDrawInterval = 0;
+        }
+    }
+
     render(){
         return (
             <div id="cardGame">
@@ -130,10 +162,10 @@ class CardGame extends React.Component {
                 <span id="spreadContent">{ this.state.SpreadContent.name }</span>
             </div>
             <div id="sleeveDrawSection">
-                <button id="sleeveDraw">
+                <button id="sleeveDraw" onClick={ this.sleeveDraw }>
                     Sleeve Draw
                 </button>
-                <span id="sleeveDrawCD"></span>
+                <span id="sleeveDrawCD">{ this.SleeveDrawnCooldown > 0 && this.SleeveDrawnCooldown }</span>
             </div>
             <div id="party">
             </div>
