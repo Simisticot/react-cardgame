@@ -50,12 +50,14 @@ class CardGame extends React.Component {
         this.state = {
             DrawCooldown:0,
             DrawnCard:this.cards[0],
-            RoyalRoad:this.royalRoadTypes[0]
+            RoyalRoad:this.royalRoadTypes[0],
+            SpreadContent:this.cards[0]
         };
         this.drawcd = this.drawcd.bind(this);
         this.updateDrawCD = this.updateDrawCD.bind(this);
         this.draw = this.draw.bind(this);
         this.royalRoad = this.royalRoad.bind(this);
+        this.spread = this.spread.bind(this);
 
         this.drawInterval = 0;
     }
@@ -64,6 +66,7 @@ class CardGame extends React.Component {
         if(this.drawInterval != 0)return;
         this.drawcd();
         let rand = this.randomCard();
+        console.log(rand);
         this.setState({DrawnCard:this.cards[rand]});
     }
 
@@ -89,11 +92,19 @@ class CardGame extends React.Component {
     }
 
     royalRoad(){
-        if(this.state.DrawnCard.name = "")return;
-        this.setState(previousState => ({ 
+        if(this.state.DrawnCard.name === "")return;
+        this.setState(prevState => ({ 
             DrawnCard: this.cards[0],
-            RoyalRoad: this.royalRoadTypes[previousState.DrawnCard.royalRoad]
+            RoyalRoad: this.royalRoadTypes[prevState.DrawnCard.royalRoad]
          }));
+    }
+
+    spread(){
+        if(this.state.DrawnCard.name === "")return;
+        this.setState(prevState => ({
+            SpreadContent: prevState.DrawnCard,
+            DrawnCard: this.cards[0]
+        }));
     }
 
     render(){
@@ -113,10 +124,10 @@ class CardGame extends React.Component {
                 <span id="royalRoadEffect">{ this.state.RoyalRoad.name }</span>
             </div>
             <div id="spreadSection">
-                <button id="spread">
+                <button id="spread" onClick={ this.spread }>
                     Spread
                 </button>
-                <span id="spreadContent"></span>
+                <span id="spreadContent">{ this.state.SpreadContent.name }</span>
             </div>
             <div id="sleeveDrawSection">
                 <button id="sleeveDraw">
