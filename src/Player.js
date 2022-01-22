@@ -11,8 +11,15 @@ const Player = () => {
             setDamage(prevDamage => (prevDamage+dps));
         }, 1000);
 
-        return () => clearInterval(damageInterval);
+        return () => {
+            clearInterval(damageInterval);
+            console.log("use return");
+        };
     }, [dps]);
+
+    const play = () => {
+        setDps(prevDps => (prevDps+600));
+    }
 
 
     
@@ -20,9 +27,9 @@ const Player = () => {
         <tr>
             <td>Aquila</td>
             <td>DRG</td>
-            <td>6000</td>
+            <td>{ dps }</td>
             <td>{ damage }</td>
-            <td><button>Play</button></td>
+            <td><button onClick={ play }>Play</button></td>
         </tr>
      );
 }
