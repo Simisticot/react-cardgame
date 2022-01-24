@@ -53,7 +53,8 @@ class CardGame extends React.Component {
             DrawnCard:this.cards[0],
             RoyalRoad:this.royalRoadTypes[0],
             SpreadContent:this.cards[0],
-            SleeveDrawCooldown:0
+            SleeveDrawCooldown:0,
+            currentBuff: 1.5
         };
         this.drawcd = this.drawcd.bind(this);
         this.updateDrawCD = this.updateDrawCD.bind(this);
@@ -74,7 +75,7 @@ class CardGame extends React.Component {
         if(this.drawInterval !== 0)return;
         this.drawcd();
         let rand = this.randomCard();
-        this.setState({DrawnCard:this.cards[rand]});
+        this.setState({DrawnCard:this.cards[rand], currentBuff: 2});
     }
 
     randomCard(){
@@ -208,7 +209,7 @@ class CardGame extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        <Player drawn={this.state.DrawnCard} royalRoad={this.state.RoyalRoad} spread={this.state.SpreadContent} discardDrawn={this.discardDrawn}/>
+                        <Player drawn={this.state.DrawnCard} royalRoad={this.state.RoyalRoad} spread={this.state.SpreadContent} discardDrawn={this.discardDrawn} currentBuff={ this.state.currentBuff }/>
                     </tbody>
                 </table>
                 

@@ -20,6 +20,10 @@ const Player = (props) => {
     const baseDps = 6000;
 
     useEffect(() => {
+        setDps(props.currentBuff*baseDps);
+    }, [props.currentBuff]);
+
+    useEffect(() => {
         console.log("effect");
         const damageInterval = setInterval(() => {
             setDamage(prevDamage => (prevDamage+dps));
@@ -46,7 +50,6 @@ const Player = (props) => {
     }
 
     const play = () => {
-        props.discardDrawn();
         switch (props.drawn.name){
             case "balance":
                 applyBuff(balanceEffect);
@@ -60,6 +63,7 @@ const Player = (props) => {
             default:
                 return;
         }
+        props.discardDrawn();
     }
 
     const updateDps = (buff) => {
